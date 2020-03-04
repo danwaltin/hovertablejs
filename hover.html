@@ -35,46 +35,46 @@
 
         <h2>The matrix</h2>
         <table class="matrix" id="matrix">
-            <thead">
+            <thead>
                 <tr>
                     <th/>
-                    <th class="col1">Col 1</th>
-                    <th class="col2">Col 2</th>
-                    <th class="col3">Col 3</th>
+                    <th>Col 1</th>
+                    <th>Col 2</th>
+                    <th>Col 3</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th class="row1">Row 1</th>
-                    <td class="row1 col1">r1c1</td>
-                    <td class="row1 col2">r1c2</td>
-                    <td class="row1 col3">r1c3</td>
+                    <th>Row 1</th>
+                    <td>r1c1</td>
+                    <td>r1c2</td>
+                    <td>r1c3</td>
                 </tr>
                 <tr>
-                    <th class="row2">Row 2</th>
-                    <td class="row2 col1">r2c1</td>
-                    <td class="row2 col2">r2c2</td>
-                    <td class="row2 col3">r2c3</td>
+                    <th>Row 2</th>
+                    <td>r2c1</td>
+                    <td>r2c2</td>
+                    <td>r2c3</td>
                 </tr>
                 <tr>
-                    <th class="row3">Row 3</th>
-                    <td class="row3 col1">r3c1</td>
-                    <td class="row3 col2">r3c2</td>
-                    <td class="row3 col3">r3c3</td>
+                    <th>Row 3</th>
+                    <td>r3c1</td>
+                    <td>r3c2</td>
+                    <td>r3c3</td>
                 </tr>
                 <tr>
-                    <th class="row4">Row 4</th>
-                    <td class="row4 col1">r4c1</td>
-                    <td class="row4 col2">r4c2</td>
-                    <td class="row4 col3">r4c3</td>
+                    <th>Row 4</th>
+                    <td>r4c1</td>
+                    <td>r4c2</td>
+                    <td>r4c3</td>
                 </tr>
                 <tr>
-                        <th class="row5">Row 5</th>
-                        <td class="row5 col1">r5c1</td>
-                        <td class="row5 col2">r5c2</td>
-                        <td class="row5 col3">r5c3</td>
-                    </tr>
-                    </tbody>
+                    <th>Row 5</th>
+                    <td>r5c1</td>
+                    <td>r5c2</td>
+                    <td>r5c3</td>
+                </tr>
+            </tbody>
         </table>
 
         <h2>Unrelated table</h2>
@@ -101,12 +101,17 @@
             </table>
 
         <script>
-            function setDemoText(text) {
-                document.getElementById("demo").innerHTML = text;
+
+            function setClass(element, className) {
+                if (element.className == "") {
+                    element.className = className;
+                } else {
+                    element.className += " " + className;
+                }
             }
 
             function highlightCell(cell) {
-                cell.className = cell.className + " hovered";
+                setClass(cell, "hovered");
             }
 
             function unhighlightCell(cell) {
@@ -115,7 +120,7 @@
 
             function highlightCells(cells) {
                 cells.forEach(cell => {
-                    cell.className = cell.className + " selected"; 
+                    setClass(cell, "selected"); 
                 });
             }
 
@@ -163,6 +168,27 @@
             }
 
 			function prepareTableWithHighlightClassNames(table) {
+                var thead = table.getElementsByTagName("thead")[0];
+                var ths = thead.getElementsByTagName("th");
+
+                for (i=0; i<ths.length;i++) {
+                    th = ths[i];
+                    setClass(th, "col" + i)
+                }
+
+                var tbody = table.getElementsByTagName("tbody")[0];
+                var trs = tbody.getElementsByTagName("tr");
+                for(rowIndex = 0; rowIndex < trs.length; rowIndex++) {
+                    var row = trs[rowIndex];
+                    var cells = row.children;
+                    for (columnIndex=0; columnIndex < cells.length; columnIndex++) {
+                        cell = cells[columnIndex];
+                        console.log(cell);
+                        setClass(cell, "row" + rowIndex)
+                        setClass(cell, "col" + columnIndex)
+                    }
+                }
+
                 //var cells = Array.from(table.getElementsByTagName(cellType));
 			}
 			
