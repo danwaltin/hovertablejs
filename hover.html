@@ -110,12 +110,19 @@
                 }
             }
 
+            function removeClass(element, className) {
+                element.className = element
+                    .className
+                    .replace(" " + className, "")
+                    .replace(className, "");
+            }
+
             function highlightCell(cell) {
                 setClass(cell, "hovered");
             }
 
             function unhighlightCell(cell) {
-                cell.className = cell.className.replace(" hovered", "");
+                removeClass(cell, "hovered");
             }
 
             function highlightCells(cells) {
@@ -126,7 +133,7 @@
 
             function unhighlightCells(cells) {
                 cells.forEach(cell => {
-                    cell.className = cell.className.replace(" selected", "");
+                    removeClass(cell, "selected");
                 });
             }
 
@@ -184,7 +191,10 @@
                     for (columnIndex = 0; columnIndex < cells.length; columnIndex++) {
                         cell = cells[columnIndex];
                         setClass(cell, "row" + rowIndex)
-                        setClass(cell, "col" + columnIndex)
+
+                        if (cell.nodeName.toLowerCase() == "td") {
+                            setClass(cell, "col" + columnIndex)
+                        }
                     }
                 }
 			}
