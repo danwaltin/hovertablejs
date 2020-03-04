@@ -33,7 +33,7 @@
     <body>
         <h1>Hover</h1>
 
-        <h2>The matrix</h2>
+        <h2>First table</h2>
         <table class="matrix" id="matrix">
             <thead>
                 <tr>
@@ -77,28 +77,28 @@
             </tbody>
         </table>
 
-        <h2>Unrelated table</h2>
+        <h2>Second table</h2>
         <table class="matrix" id="anotherMatrix">
-                <thead">
-                    <tr>
-                        <th/>
-                        <th>Col 1</th>
-                        <th>Col 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Row 1</th>
-                        <td>r1c1</td>
-                        <td>r1c2</td>
-                    </tr>
-                    <tr>
-                        <th>Row 2</th>
-                        <td>r2c1</td>
-                        <td>r2c2</td>
-                    </tr>
-                    </tbody>
-            </table>
+            <thead>
+                <tr>
+                    <th/>
+                    <th>Col 1</th>
+                    <th>Col 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Row 1</th>
+                    <td>r1c1</td>
+                    <td>r1c2</td>
+                </tr>
+                <tr>
+                    <th>Row 2</th>
+                    <td>r2c1</td>
+                    <td>r2c2</td>
+                </tr>
+            </tbody>
+        </table>
 
         <script>
 
@@ -171,33 +171,34 @@
                 var thead = table.getElementsByTagName("thead")[0];
                 var ths = thead.getElementsByTagName("th");
 
-                for (i=0; i<ths.length;i++) {
-                    th = ths[i];
-                    setClass(th, "col" + i)
+                for (columnIndex=0; columnIndex < ths.length; columnIndex++) {
+                    th = ths[columnIndex];
+                    setClass(th, "col" + columnIndex)
                 }
 
                 var tbody = table.getElementsByTagName("tbody")[0];
-                var trs = tbody.getElementsByTagName("tr");
-                for(rowIndex = 0; rowIndex < trs.length; rowIndex++) {
-                    var row = trs[rowIndex];
+                var rows = tbody.getElementsByTagName("tr");
+                for(rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+                    var row = rows[rowIndex];
                     var cells = row.children;
-                    for (columnIndex=0; columnIndex < cells.length; columnIndex++) {
+                    for (columnIndex = 0; columnIndex < cells.length; columnIndex++) {
                         cell = cells[columnIndex];
-                        console.log(cell);
                         setClass(cell, "row" + rowIndex)
                         setClass(cell, "col" + columnIndex)
                     }
                 }
-
-                //var cells = Array.from(table.getElementsByTagName(cellType));
 			}
+            
+            function prepareTableForHighlight(tableId) {
+                var table = document.getElementById(tableId);
 			
-			var tableToHighlight = "matrix";
-			var table = document.getElementById(tableToHighlight);
-			
-			prepareTableWithHighlightClassNames(table);
-            prepareHighlight(table, "th");
-            prepareHighlight(table, "td");
+                prepareTableWithHighlightClassNames(table);
+                prepareHighlight(table, "th");
+                prepareHighlight(table, "td");
+            }
+
+            prepareTableForHighlight("matrix");
+            prepareTableForHighlight("anotherMatrix");
 
         </script>
     
