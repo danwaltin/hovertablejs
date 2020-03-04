@@ -1,0 +1,180 @@
+<html>
+    <head>
+        <title>Hover</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 0.3em;
+                text-align: right;
+            }
+            td {
+                width: 50px;
+            }
+
+            .selected {
+                background-color: #eeb;
+            }
+
+            .hovered {
+                background-color: #cc9;
+            }
+
+            th.selected {
+                background-color: #cc9;
+            }
+
+        </style>    
+    </head>
+    <body>
+        <h1>Hover</h1>
+
+        <h2>The matrix</h2>
+        <table class="matrix" id="matrix">
+            <thead">
+                <tr>
+                    <th/>
+                    <th class="col1">Col 1</th>
+                    <th class="col2">Col 2</th>
+                    <th class="col3">Col 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="row1">Row 1</th>
+                    <td class="row1 col1">r1c1</td>
+                    <td class="row1 col2">r1c2</td>
+                    <td class="row1 col3">r1c3</td>
+                </tr>
+                <tr>
+                    <th class="row2">Row 2</th>
+                    <td class="row2 col1">r2c1</td>
+                    <td class="row2 col2">r2c2</td>
+                    <td class="row2 col3">r2c3</td>
+                </tr>
+                <tr>
+                    <th class="row3">Row 3</th>
+                    <td class="row3 col1">r3c1</td>
+                    <td class="row3 col2">r3c2</td>
+                    <td class="row3 col3">r3c3</td>
+                </tr>
+                <tr>
+                    <th class="row4">Row 4</th>
+                    <td class="row4 col1">r4c1</td>
+                    <td class="row4 col2">r4c2</td>
+                    <td class="row4 col3">r4c3</td>
+                </tr>
+                <tr>
+                        <th class="row5">Row 5</th>
+                        <td class="row5 col1">r5c1</td>
+                        <td class="row5 col2">r5c2</td>
+                        <td class="row5 col3">r5c3</td>
+                    </tr>
+                    </tbody>
+        </table>
+
+        <h2>Unrelated table</h2>
+        <table class="matrix" id="anotherMatrix">
+                <thead">
+                    <tr>
+                        <th/>
+                        <th>Col 1</th>
+                        <th>Col 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Row 1</th>
+                        <td>r1c1</td>
+                        <td>r1c2</td>
+                    </tr>
+                    <tr>
+                        <th>Row 2</th>
+                        <td>r2c1</td>
+                        <td>r2c2</td>
+                    </tr>
+                    </tbody>
+            </table>
+
+        <script>
+            function setDemoText(text) {
+                document.getElementById("demo").innerHTML = text;
+            }
+
+            function highlightCell(cell) {
+                cell.className = cell.className + " hovered";
+            }
+
+            function unhighlightCell(cell) {
+                cell.className = cell.className.replace(" hovered", "");
+            }
+
+            function highlightCells(cells) {
+                cells.forEach(cell => {
+                    cell.className = cell.className + " selected"; 
+                });
+            }
+
+            function unhighlightCells(cells) {
+                cells.forEach(cell => {
+                    cell.className = cell.className.replace(" selected", "");
+                });
+            }
+
+            function getCellClassOfType(cell, type) {
+                var classNames = cell.className.split(" ");
+                return classNames.filter(function(n) {return n.startsWith(type);})[0]
+            }
+            
+            function siblingCells(cell, type, table) {
+                var rowClass = getCellClassOfType(cell, type);
+                var cells = table.getElementsByClassName(rowClass);
+
+                return Array.from(cells);
+            }
+
+            function enterCell(cell, table) {
+                highlightCell(cell);
+                highlightCells(siblingCells(cell, "row", table));
+                highlightCells(siblingCells(cell, "col", table));
+            }
+
+            function leaveCell(cell, table) {
+                unhighlightCell(cell);
+                unhighlightCells(siblingCells(cell, "row", table));
+                unhighlightCells(siblingCells(cell, "col", table));
+            }
+
+            function prepareHighlight(table, cellType) {
+                var cells = Array.from(table.getElementsByTagName(cellType));
+
+				cells.forEach(cell => {
+                    cell.onmouseenter = function() {
+						enterCell(this, table);
+                    };
+                    cell.onmouseleave = function() {
+                        leaveCell(this, table);
+                    };
+                });
+            }
+
+			function prepareTableWithHighlightClassNames(table) {
+                //var cells = Array.from(table.getElementsByTagName(cellType));
+			}
+			
+			var tableToHighlight = "matrix";
+			var table = document.getElementById(tableToHighlight);
+			
+			prepareTableWithHighlightClassNames(table);
+            prepareHighlight(table, "th");
+            prepareHighlight(table, "td");
+
+        </script>
+    
+    </body>
+</html>
+
